@@ -1,2 +1,36 @@
-# myrepo
-testing my setup 
+---
+title: "Homework1"
+author: "Erika Park"
+date: "9/23/2021"
+output: github_document
+---
+
+* For some people who do not have their degree specified, I indicated their degree as "NA" 
+
+```{r, warning = FALSE, message = FALSE}
+library(rvest); library(xml2); library(dplyr); library(tidyverse)
+
+link = "https://guide.wisc.edu/faculty/"
+page = read_html(link) 
+
+people = page %>% html_nodes(".uw-people p") 
+
+name_list <- c(); pos_list <- c(); dep_list <- c(); degr_list <- c()
+
+for (i in 1:length(people)){
+  info = unlist(str_split(str_remove(people[i], "<p>"), "<br>"))
+  name_list <- c(name_list, info[1])
+  pos_list <-  c(pos_list, info[2]) 
+  dep_list <- c(dep_list, info[3])
+  if (info[4] == "</p>"){
+    info[4] = "NA" #some people do not have information about their degrees
+  }
+  degr_list <- c(degr_list, info[4])
+}
+
+df = data.frame(name_list,pos_list, dep_list, degr_list)
+colnames(df) = c("Name", "Position", "Department", "Degree")
+df = as_tibble(df)
+df %>% print(n = length(people))
+```
+
