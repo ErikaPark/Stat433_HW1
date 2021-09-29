@@ -8,6 +8,7 @@ output: github_document
 * For some people who do not have their degree specified, I indicated their degree as "NA" 
 
 ```{r, warning = FALSE, message = FALSE}
+
 library(rvest); library(xml2); library(dplyr); library(tidyverse)
 
 link = "https://guide.wisc.edu/faculty/"
